@@ -1,0 +1,12 @@
+{
+    "files.exclude": {
+        "**/.vscode": true
+    },
+    "files.associations": {
+        "power_crl.h": "c",
+        "gpio.h": "c",
+        "eeprom_crl.h": "c",
+        "ntc.h": "c",
+        "dht11.h": "c"
+    }
+}

@@ -1,0 +1,17 @@
+"..\Output\delay.obj",
+"..\Output\adc.obj",
+"..\Output\eeprom.obj",
+"..\Output\gpio.obj",
+"..\Output\main.obj",
+"..\Output\pwm.obj",
+"..\Output\tim.obj",
+"..\Output\uart.obj",
+"..\Output\communication.obj",
+"..\Output\eeprom_crl.obj",
+"..\Output\ntc.obj",
+"..\Output\power_crl.obj",
+"..\Output\dht11.obj",
+"..\Output\common.obj",
+"..\Output\modbus_rtu.obj" 
+TO "..\Output\QDC01_C" 
+PRINT(".\Listings\QDC01_C.m51") RAMSIZE(256) 

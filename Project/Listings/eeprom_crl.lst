@@ -1,0 +1,101 @@
+C51 COMPILER V9.60.7.0   EEPROM_CRL                                                        05/28/2025 13:41:30 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE EEPROM_CRL
+OBJECT MODULE PLACED IN ..\Output\eeprom_crl.obj
+COMPILER INVOKED BY: D:\APP\Keil_v5\C51\BIN\C51.EXE ..\BSP\Src\eeprom_crl.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\BSP
+                    -\Inc;..\Core\Inc;..\Driver;..\Emembed\Inc;..\SYSTEM\Inc) DEBUG OBJECTEXTEND PRINT(.\Listings\eeprom_crl.lst) OBJECT(..\O
+                    -utput\eeprom_crl.obj)
+
+line level    source
+
+   1          #include "eeprom_crl.h"
+   2          
+   3          uint8_t mode_info[5];
+   4          
+   5          /**
+   6           * @brief       eeprom状态判定，是否写入过
+   7           *
+   8           * @param   
+   9           *
+  10           * @return  void
+  11          **/
+  12          void eeprom_statu_judge( void )
+  13          {
+  14   1          uint8_t eeprom_statu_flag;
+  15   1      
+  16   1          eeprom_statu_flag = ISP_Read(EEPROM_STATU_JUDGE);
+  17   1      
+  18   1          if( eeprom_statu_flag == 0xFF)
+  19   1          {
+  20   2              ac_dc.power_level       = 0x32;          // 50 220V输出50%功率
+  21   2              ac_dc.fan_level         = 0x03;          // 3  风扇默认三档
+  22   2              ac_dc.alarm_temp_val    = 0x50;          // 报警温度默认80℃
+  23   2              ac_dc.sync_flag         = 0x00;          // 0000 0000  sync默认关
+  24   2              ac_dc.channel_num       = 0x05;          // 0000 0111  三路全开
+  25   2              ac_dc.mode_num          = 0x02;          // 50         220V输出50%功率
+  26   2              ac_dc.ac_switch         = 1;
+  27   2      
+  28   2              eeprom_data_record();
+  29   2          }
+  30   1          eeprom_data_init(); 
+  31   1      }
+  32          
+  33          void eeprom_data_record( void )
+  34          {
+  35   1          ISP_Earse(0X00);
+  36   1      
+  37   1          ISP_Write(POWER_ADDR,ac_dc.power_level);
+  38   1          ISP_Write(FAN_ADDR,ac_dc.fan_level);
+  39   1          ISP_Write(ALARM_ADDR,ac_dc.alarm_temp_val);
+  40   1          ISP_Write(SYNC_ADDR,ac_dc.sync_flag);
+  41   1          ISP_Write(CHANNEL_ADDR,ac_dc.channel_num);
+  42   1          ISP_Write(MODE_ADDR,ac_dc.mode_num);
+  43   1          ISP_Write(AC_SWITCH,ac_dc.ac_switch);
+  44   1      
+  45   1          ISP_Write(EEPROM_STATU_JUDGE,0x58);
+  46   1      }
+  47          
+  48          
+  49          /**
+  50           * @brief       eeprom 数据初始化
+  51           *
+  52           * @param   
+  53           *
+C51 COMPILER V9.60.7.0   EEPROM_CRL                                                        05/28/2025 13:41:30 PAGE 2   
+
+  54           * @return  void
+  55          **/
+  56          void eeprom_data_init( void )
+  57          {
+  58   1          ac_dc.power_level = ISP_Read(POWER_ADDR);
+  59   1          ac_220v_crl(ac_dc.power_level);
+  60   1      
+  61   1          ac_dc.fan_level = ISP_Read(FAN_ADDR);
+  62   1          fan_ctrl(ac_dc.fan_level);
+  63   1      
+  64   1          ac_dc.alarm_temp_val = ISP_Read(ALARM_ADDR);
+  65   1      
+  66   1          ac_dc.sync_flag = ISP_Read(SYNC_ADDR);
+  67   1      
+  68   1          ac_dc.channel_num = ISP_Read(CHANNEL_ADDR);
+  69   1          channel_choose();
+  70   1      
+  71   1          ac_dc.mode_num = ISP_Read(MODE_ADDR);
+  72   1      
+  73   1          ac_dc.ac_switch = ISP_Read(AC_SWITCH);
+  74   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    248    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      5    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

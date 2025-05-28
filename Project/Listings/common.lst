@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.7.0   COMMON                                                            05/28/2025 13:41:30 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE COMMON
+OBJECT MODULE PLACED IN ..\Output\common.obj
+COMPILER INVOKED BY: D:\APP\Keil_v5\C51\BIN\C51.EXE ..\Emembed\Src\common.c LARGE OPTIMIZE(8,SPEED) BROWSE INCDIR(..\BSP
+                    -\Inc;..\Core\Inc;..\Driver;..\Emembed\Inc;..\SYSTEM\Inc) DEBUG OBJECTEXTEND PRINT(.\Listings\common.lst) OBJECT(..\Outpu
+                    -t\common.obj)
+
+line level    source
+
+   1          #include "common.h"
+   2          
+   3          /**
+   4           * @brief       一些定时执行的事件   Timer3：10ms
+   5           *
+   6           * @param   
+   7           *
+   8           * @return  void
+   9          **/
+  10          void Tim3_ISR( void ) interrupt 19
+  11          {
+  12   1      
+  13   1          static uint16_t temp_scan_cnt = 0;
+  14   1          
+  15   1          /* 1, Signal_IN状态查询           */
+  16   1          if( Signal_IN == 0 )
+  17   1          {
+  18   2              ac_dc.signal_in_flag = 1;
+  19   2          }else
+  20   1          {
+  21   2              ac_dc.signal_in_flag = 0;
+  22   2          }
+  23   1      
+  24   1          /* 2, temp 上报 1s/次                             */
+  25   1          if( temp.temp_scan_flag == 0 )
+  26   1          {
+  27   2              temp_scan_cnt++;
+  28   2              if( temp_scan_cnt == 100 )
+  29   2              {
+  30   3                  temp.temp_scan_flag = 1;
+  31   3                  temp_scan_cnt = 0;
+  32   3              }
+  33   2          }
+  34   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     70    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =      2    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
